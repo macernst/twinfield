@@ -4,7 +4,7 @@ require "rubygems"
 require "twinfield"
 require File.expand_path("../config", __FILE__)
 
-@session = Twinfield::Session.new
+# @session = Twinfield::Session.new
 
 # # 1
 # @session.logon
@@ -23,9 +23,9 @@ require File.expand_path("../config", __FILE__)
 #
 # process.request(method, &block)
 
-session = Twinfield::Session.new
-session.session_id
-
-Twinfield::Process.new(session.session_id).request do
-  "hallo"
-end
+# session = Twinfield::Session.new
+# session.session_id
+#
+# Twinfield::Process.new(session.session_id).request do
+#   "hallo"
+# end

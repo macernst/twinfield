@@ -1,0 +1,29 @@
+h1. Twinfield
+
+Twinfield is an international Web service for collaborative online accounting. The Twinfield gem is a simple client for their SOAP-based API.
+
+h2. Installing
+
+h3. Using Twinfield
+
+Add Twinfield in @Gemfile@ as a gem dependency:
+
+<pre>
+  gem "twinfield"
+</pre>
+
+Run the following in your console to install with Bundler:
+
+<pre>
+  bundle install
+</pre>
+
+Add a config block to your environment.rb:
+
+<pre>
+  Twinfield::Config.setup do |config|
+    config.username = ""
+    config.password = ""
+    config.organisation = ""
+  end
+</pre>
