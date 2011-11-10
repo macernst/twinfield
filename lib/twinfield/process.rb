@@ -1,27 +1,33 @@
 module Twinfield
   class Process
-    def initialize(session_id)
+    Savon.env_namespace = :soap
+
+    def initialize(session_id, cluster_url)
       @session_id = session_id
       @client = Savon::Client.new do
-        wsdl.document = Twinfield::DOCUMENT_URLS[:process]
+        wsdl.document = "#{cluster_url}#{Twinfield::WSDLS[:process]}"
       end
     end
 
-    def request(method, &block)
-      client = Savon::Client.new do
-        wsdl.document = "https://c1.twinfield.com/webservices/processxml.asmx?wsdl"
-      end
+    def actions
+      @client.wsdl.soap_actions
+    end
 
-      client.request :process_xml_document do
-        soap.header = {
-          "Header" => {
-            "SessionID" => @session_id
-          },
-          :attributes! => {
-            "Header" => {:xmlns => "http://www.twinfield.com/"}
+    def request(method, &block)
+      method = method.to_sym
+      if actions.include?(method)
+        session_id = @session_id
+        @client.request(method) do
+          soap.header = {
+            "Header" => {"SessionID" => session_id},
+            :attributes! => {
+              "Header" => {:xmlns => "http://www.twinfield.com/"}
+            }
           }
-        }
-        soap.body = block.call
+          soap.body = block.call
+        end
+      else
+        raise "Method not found"
       end
     end
   end
