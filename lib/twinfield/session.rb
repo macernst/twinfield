@@ -50,48 +50,118 @@ module Twinfield
             "SessionID" => session_id
           },
           :attributes! => {
-            "Header" => { :xmlns => 'http://www.twinfield.com/' }
+            "Header" => {:xmlns => "http://www.twinfield.com/"}
           }
         }
         soap.body = "<Abandon xmlns='http://www.twinfield.com/' />"
       end
       # TODO: Return real status
-      # There is no message from twinfield to know if the session
-      # is abandoned. Should be looked at in the future
+      # There is no message from twinfield if the action succeeded
       return "Ok"
     end
 
     # Keep the session alive, to prevent session time out. A session time out will occur after 20 minutes.
     def keep_alive
-      raise NotImplementedError
+      response = @client.request :keep_alive do
+        soap.header = {
+          "Header" => {
+            "SessionID" => session_id
+          },
+          :attributes! => {
+            "Header" => {:xmlns => "http://www.twinfield.com/"}
+          }
+        }
+        soap.body = "<KeepAliveResponse xmlns='http://www.twinfield.com/' />"
+      end
+      # TODO: Return real status
+      # There is no message from twinfield if the action succeeded
+      return "Ok"
     end
 
     # Gets the session's user role.
     def get_role
+      # <?xml version="1.0" encoding="utf-8"?>
+      # <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      #   <soap:Header>
+      #     <Header xmlns="http://www.twinfield.com/">
+      #       <SessionID>string</SessionID>
+      #     </Header>
+      #   </soap:Header>
+      #   <soap:Body>
+      #     <GetRole xmlns="http://www.twinfield.com/" />
+      #   </soap:Body>
+      # </soap:Envelope>
       raise NotImplementedError
     end
 
     # Sends the sms code.
     def sms_send_code
+      # <?xml version="1.0" encoding="utf-8"?>
+      # <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      #   <soap:Header>
+      #     <Header xmlns="http://www.twinfield.com/">
+      #       <SessionID>string</SessionID>
+      #     </Header>
+      #   </soap:Header>
+      #   <soap:Body>
+      #     <SmsSendCode xmlns="http://www.twinfield.com/" />
+      #   </soap:Body>
+      # </soap:Envelope>
       raise NotImplementedError
     end
 
     # Logs on with the sms code.
     def sms_logon
+      # <?xml version="1.0" encoding="utf-8"?>
+      # <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      #   <soap:Header>
+      #     <Header xmlns="http://www.twinfield.com/">
+      #       <SessionID>string</SessionID>
+      #     </Header>
+      #   </soap:Header>
+      #   <soap:Body>
+      #     <SmsLogon xmlns="http://www.twinfield.com/">
+      #       <smsCode>string</smsCode>
+      #     </SmsLogon>
+      #   </soap:Body>
+      # </soap:Envelope>
       raise NotImplementedError
     end
 
     # Changes the password.
     def change_password
-      raise NotImplementedError
-    end
-
-    def change_password
+      # <?xml version="1.0" encoding="utf-8"?>
+      # <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      #   <soap:Header>
+      #     <Header xmlns="http://www.twinfield.com/">
+      #       <SessionID>string</SessionID>
+      #     </Header>
+      #   </soap:Header>
+      #   <soap:Body>
+      #     <ChangePassword xmlns="http://www.twinfield.com/">
+      #       <currentPassword>string</currentPassword>
+      #       <newPassword>string</newPassword>
+      #     </ChangePassword>
+      #   </soap:Body>
+      # </soap:Envelope>
       raise NotImplementedError
     end
 
     # Selects a company.
     def select_company
+      # <?xml version="1.0" encoding="utf-8"?>
+      # <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      #   <soap:Header>
+      #     <Header xmlns="http://www.twinfield.com/">
+      #       <SessionID>string</SessionID>
+      #     </Header>
+      #   </soap:Header>
+      #   <soap:Body>
+      #     <SelectCompany xmlns="http://www.twinfield.com/">
+      #       <company>string</company>
+      #     </SelectCompany>
+      #   </soap:Body>
+      # </soap:Envelope>
       raise NotImplementedError
     end
   end
