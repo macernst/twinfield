@@ -10,13 +10,14 @@ module Twinfield
     end
 
     def actions
-      @client.wsdl.soap_actions
+      @actions ||= @client.wsdl.soap_actions
     end
 
     def request(method, &block)
       method = method.to_sym
-      if actions.include?(method)
+      if @actions.include?(method)
         session_id = @session_id
+
         @client.request(method) do
           soap.header = {
             "Header" => {"SessionID" => session_id},
