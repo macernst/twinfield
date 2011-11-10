@@ -2,10 +2,10 @@ module Twinfield
   class Process
     Savon.env_namespace = :soap
 
-    def initialize(session_id, cluster_url)
+    def initialize(session_id, cluster)
       @session_id = session_id
       @client = Savon::Client.new do
-        wsdl.document = "#{cluster_url}#{Twinfield::WSDLS[:process]}"
+        wsdl.document = "#{cluster}#{Twinfield::WSDLS[:process]}"
       end
     end
 
