@@ -34,6 +34,12 @@ module Twinfield
       return @message
     end
 
+    # Returns true or false if current session has a session_id
+    # and cluster from twinfield
+    def connected?
+      !!@session_id && !!@cluster
+    end
+
     def session_id
       raise "No active session_id found." if @session_id.nil?
       return @session_id
