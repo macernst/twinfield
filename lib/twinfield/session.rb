@@ -35,10 +35,12 @@ module Twinfield
     end
 
     def session_id
+      raise "No active session_id found." if @session_id.nil?
       return @session_id
     end
 
     def cluster
+      raise "No active cluster found." if @cluster.nil?
       return @cluster
     end
 
