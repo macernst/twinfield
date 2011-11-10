@@ -3,51 +3,67 @@ module Twinfield
 
     attr_accessor :session_id, :cluster
 
+    # sets up a new savon client which will be used for current Session
     def initialize
       @client = Savon::Client.new do
         wsdl.document = Twinfield::WSDLS[:session]
       end
     end
 
-    # Retrieve a SessionID
-    def logon
-      response = @client.request :logon do
-        soap.input = ["Logon", {"xmlns" => "http://www.twinfield.com/"}]
-        soap.body = Twinfield::Config.to_hash
-      end
+    # retrieve a session_id and cluster from twinfield
+    # relog is by default set to false so when logon is called on your
+    # current session, you wont lose your session_id
+    def logon(relog = false)
+      if connected? && (relog == false)
+        "Already connected."
+      else
+        response = @client.request :logon do
+          soap.input = ["Logon", {"xmlns" => "http://www.twinfield.com/"}]
+          soap.body = Twinfield.configuration.to_hash
+        end
 
-      if response.body[:logon_response][:logon_result] == "Ok"
-        @session_id = response.header[:header][:session_id]
-        @cluster = response.body[:logon_response][:cluster]
-      end
+        if response.body[:logon_response][:logon_result] == "Ok"
+          @session_id = response.header[:header][:session_id]
+          @cluster = response.body[:logon_response][:cluster]
+        end
 
-      @message = case response.body[:logon_response][:logon_result]
-        when "Ok" then "Log-on successful."
-        when "Blocked" then "Log-on is blocked, because of system maintenance."
-        when "Untrusted" then "Log-on is not trusted."
-        when "Invalid" then "Log-on is invalid."
-        when "Deleted" then "Log-on is disabled."
-        when "OrganisationInactive" then "Organization is inactive."
-        else "Unknown status"
+        @message = case response.body[:logon_response][:logon_result]
+          when "Ok" then "Log-on successful."
+          when "Blocked" then "Log-on is blocked, because of system maintenance."
+          when "Untrusted" then "Log-on is not trusted."
+          when "Invalid" then "Log-on is invalid."
+          when "Deleted" then "Log-on is disabled."
+          when "OrganisationInactive" then "Organization is inactive."
+          else "Unknown status"
+        end
       end
+    end
 
-      return @message
+    # returns session_id if present
+    def session_id
+      @session_id || false
+    end
+
+    # returns session_id if present
+    def cluster
+      @cluster || false
+    end
+
+    # call logon method with relog set to true
+    # this wil destroy the current session and cluster
+    def relog
+      logon(relog = true)
+    end
+
+    # after a logon try you can ask the current status
+    def status
+      @message || false
     end
 
     # Returns true or false if current session has a session_id
     # and cluster from twinfield
     def connected?
       !!@session_id && !!@cluster
-    end
-
-    def session_id
-      raise "No active session_id found." if @session_id.nil?
-      return @session_id
-    end
-
-    def cluster
-      raise "No active cluster found." if @cluster.nil?
-      return @cluster
     end
 
     # Abandons the session.

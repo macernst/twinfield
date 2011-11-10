@@ -1,5 +1,5 @@
 require "savon"
-require "twinfield/config"
+require "twinfield/configuration"
 require "twinfield/session"
 require "twinfield/process"
 require "twinfield/finder"
@@ -25,4 +25,15 @@ module Twinfield
     109 => "You need access to at least one company to log on.",
     110 => "Login is not allowed on this server"
   }
+
+  class << self
+    # Holds the configuration for easy access to settings
+    attr_accessor :configuration
+
+    # Configures gem options
+    def configure
+      self.configuration ||= Twinfield::Configuration.new
+      yield(configuration)
+    end
+  end
 end
