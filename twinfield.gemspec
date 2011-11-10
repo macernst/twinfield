@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Twinfield::VERSION
   s.authors     = ["Ernst Rijsdijk"]
   s.email       = ["ernst.rijsdijk@holder.nl"]
-  s.homepage    = "http://www.holder.nl"
+  s.homepage    = "https://github.com/macernst/twinfield"
   s.summary     = "A simple client for the Twinfield SOAP-based API"
   s.description = "Twinfield is an international Web service for collaborative online accounting. The Twinfield gem is a simple client for their SOAP-based API."
 
