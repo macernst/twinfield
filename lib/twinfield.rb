@@ -1,11 +1,8 @@
 require "savon"
-require "twinfield/configuration"
-require "twinfield/session"
-require "twinfield/process"
-require "twinfield/finder"
-require "twinfield/version"
 
 module Twinfield
+  Savon.env_namespace = :soap
+
   WSDLS = {
     :session => "https://login.twinfield.com/webservices/session.asmx?wsdl",
     :process => "/webservices/processxml.asmx?wsdl",
@@ -37,3 +34,9 @@ module Twinfield
     end
   end
 end
+
+require "twinfield/configuration"
+require "twinfield/session"
+require "twinfield/process"
+require "twinfield/finder"
+require "twinfield/version"

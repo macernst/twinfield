@@ -13,15 +13,15 @@ describe Twinfield::Session do
     end
 
     it "should return successful message" do
-      @session.status.should == "Log-on successful."
+      @session.status.should == "Ok"
     end
 
     it "should return that the current session already is connected" do
-      @session.logon.should == "Already connected."
+      @session.logon.should == "already connected"
     end
 
     it "should return that the current session already is connected" do
-      @session.relog.should == "Log-on successful."
+      @session.relog.should == "Ok"
     end
 
     it "should have a session_id after successful logon" do
@@ -49,15 +49,15 @@ describe Twinfield::Session do
     end
 
     it "should return invalid message" do
-      @session.status.should == "Log-on is invalid."
+      @session.status.should == "Invalid"
     end
 
     it "should not have a session_id" do
-      @session.session_id.should == false
+      @session.session_id.should == nil
     end
 
     it "should not have a cluster" do
-      @session.cluster.should == false
+      @session.cluster.should == nil
     end
 
     it "should return false for connected" do
