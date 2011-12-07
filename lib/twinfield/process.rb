@@ -3,7 +3,7 @@ module Twinfield
     extend self
 
     def session
-      @session ||= Twinfield::Session.new
+      @session = Twinfield::Session.new
       @session.logon
       return @session
     end
